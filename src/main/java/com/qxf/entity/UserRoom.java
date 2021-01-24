@@ -29,10 +29,21 @@ public class UserRoom implements Serializable {
      */
     private String roomId;
 
+    // 群聊名称
+    private String roomName;
+
     /**
      * 用户角色，1群主2管理员3普通成员
      */
     private Integer userRole;
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
 
     public String getId() {
         return id;
@@ -69,6 +80,7 @@ public class UserRoom implements Serializable {
             "id=" + id +
             ", userId=" + userId +
             ", roomId=" + roomId +
+            ", roomName=" + roomName +
             ", userRole=" + userRole +
         "}";
     }

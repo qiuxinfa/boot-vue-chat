@@ -40,9 +40,22 @@ public class Friendship implements Serializable {
     private String groupId;
 
     /**
+     * 好友头像
+     */
+    private String avatar;
+
+    /**
      * 好友状态，0发送添加好友请求，1正式成为好友
      */
     private Integer status;
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     public String getId() {
         return id;

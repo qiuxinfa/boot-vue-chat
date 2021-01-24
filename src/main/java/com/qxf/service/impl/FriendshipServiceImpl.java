@@ -33,9 +33,6 @@ public class FriendshipServiceImpl extends ServiceImpl<FriendshipMapper, Friends
 
     @Override
     public List<Friendship> getFriendList(String userId) {
-        LambdaQueryWrapper<Friendship> query = Wrappers.lambdaQuery();
-        query.eq(Friendship::getUserId,userId);
-        query.eq(Friendship::getStatus,1);
-        return friendshipMapper.selectList(query);
+        return friendshipMapper.getFriendList(userId);
     }
 }

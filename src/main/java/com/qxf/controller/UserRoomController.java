@@ -27,7 +27,7 @@ public class UserRoomController {
 
     @GetMapping("/list")
     public ResultUtil getRoomList(){
-        SysUser user = (SysUser) SecurityContextHolder.getContext().getAuthentication();
+        SysUser user = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResultUtil.ok(service.getRoomList(user.getId()));
     }
 }

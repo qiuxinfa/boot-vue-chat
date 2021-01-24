@@ -47,14 +47,14 @@ public class LoginController {
 
     // 登录
     @PostMapping("/login")
-    public ResultUtil login(String username, String password){
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
+    public ResultUtil login(@RequestBody SysUser user){
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
         try {
             // 身份认证
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             //广播系统通知消息
-            simpMessagingTemplate.convertAndSend("/topic/notification","系统消息：用户【"+username+"】进入了聊天室");
+            simpMessagingTemplate.convertAndSend("/topic/notification","系统消息：用户【"+user.getUsername()+"】进入了聊天室");
             // 认证成功，返回用户信息
             return ResultUtil.ok("登录成功！",authentication.getPrincipal());
         }catch (LockedException | DisabledException e){

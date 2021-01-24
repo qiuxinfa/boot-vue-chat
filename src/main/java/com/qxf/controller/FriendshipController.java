@@ -27,7 +27,7 @@ public class FriendshipController {
 
     @GetMapping("/list")
     public ResultUtil getFriendList(){
-        SysUser user = (SysUser) SecurityContextHolder.getContext().getAuthentication();
+        SysUser user = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResultUtil.ok(service.getFriendList(user.getId()));
     }
 }
