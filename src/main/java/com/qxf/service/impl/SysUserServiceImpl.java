@@ -46,6 +46,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
+    public Integer updateUser(SysUser user) {
+        return sysUserMapper.updateUser(user);
+    }
+
+    @Override
     public Integer checkUsername(String username) {
         LambdaQueryWrapper<SysUser> query = Wrappers.lambdaQuery();
         query.eq(SysUser::getUsername,username);

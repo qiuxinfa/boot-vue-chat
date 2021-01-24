@@ -34,6 +34,7 @@ public class UserRoomServiceImpl extends ServiceImpl<UserRoomMapper, UserRoom> i
     public List<UserRoom> getRoomList(String userId) {
         LambdaQueryWrapper<UserRoom> query = Wrappers.lambdaQuery();
         query.eq(UserRoom::getUserId,userId);
+        query.orderByAsc(UserRoom::getRoomName);
         return roomMapper.selectList(query);
     }
 }

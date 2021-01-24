@@ -15,6 +15,11 @@ import java.util.List;
  */
 public interface SysUserService extends IService<SysUser> {
     /**
+     * 修改个人信息
+     */
+    Integer updateUser(SysUser user);
+    
+    /**
      * 检查用户名是否存在，用于用户注册时校验
      */
     Integer checkUsername(String username);

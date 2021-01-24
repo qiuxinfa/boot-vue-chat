@@ -1,5 +1,6 @@
 package com.qxf.controller;
 
+import com.qxf.entity.SysUser;
 import com.qxf.service.SysUserService;
 import com.qxf.util.ResultUtil;
 import org.springframework.web.bind.annotation.*;
@@ -35,5 +36,15 @@ public class SysUserController {
     public Integer checkUsername(@RequestParam("username")String username){
         return userService.checkUsername(username);
     }
-
+    
+    // 修改个人信息
+    @PostMapping("/update")
+    public ResultUtil updateUser(@RequestBody SysUser user){
+        Integer cnt = userService.updateUser(user);
+        if (cnt > 0){
+            return ResultUtil.ok("操作成功！");
+        }else {
+            return ResultUtil.ok("操作失败！");
+        }
+    }
 }

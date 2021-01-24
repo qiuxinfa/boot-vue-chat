@@ -12,5 +12,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2021-01-08
  */
 public interface SysUserMapper extends BaseMapper<SysUser> {
-
+    /**
+     * 修改个人信息
+     */
+    Integer updateUser(SysUser user);
 }
