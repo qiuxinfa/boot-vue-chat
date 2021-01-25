@@ -1,15 +1,17 @@
 package com.qxf.controller;
 
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.qxf.entity.Friendship;
 import com.qxf.entity.SysUser;
 import com.qxf.service.FriendshipService;
 import com.qxf.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * <p>
@@ -30,4 +32,17 @@ public class FriendshipController {
         SysUser user = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResultUtil.ok(service.getFriendList(user.getId()));
     }
+
+    @PostMapping("/add")
+    public ResultUtil addFriend(@RequestBody Friendship friendship){
+        friendship.setId(UUID.randomUUID().toString().replaceAll("-",""));
+        Integer cnt = service.addFriend(friendship);
+        if (cnt > 0){
+            return ResultUtil.ok("请求发送成功！");
+        }else {
+            return ResultUtil.ok("请求发送失败！");
+        }
+
+    }
+
 }

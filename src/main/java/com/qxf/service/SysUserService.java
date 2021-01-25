@@ -32,5 +32,5 @@ public interface SysUserService extends IService<SysUser> {
     /**
      * 查询用户列表
      */
-    List<SysUser> queryUserList(String username);
+    List<SysUser> queryUserList(String username,Integer isFriend);
 }

@@ -1,5 +1,7 @@
 package com.qxf.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+
 import java.io.Serializable;
 
 /**
@@ -36,6 +38,18 @@ public class UserRoom implements Serializable {
      * 用户角色，1群主2管理员3普通成员
      */
     private Integer userRole;
+
+    // 群聊用户id，用英文逗号分割
+    @TableField(exist = false)
+    private String userIds;
+
+    public String getUserIds() {
+        return userIds;
+    }
+
+    public void setUserIds(String userIds) {
+        this.userIds = userIds;
+    }
 
     public String getRoomName() {
         return roomName;

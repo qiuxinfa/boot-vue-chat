@@ -26,7 +26,7 @@ public class ResultUtil {
     }
 
     public static ResultUtil ok(Object data){
-        return new ResultUtil(200,"成功",data);
+        return new ResultUtil(200,"",data);
     }
 
     public static ResultUtil ok(String msg,Object data){

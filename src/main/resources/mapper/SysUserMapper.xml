@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qxf.mapper.SysUserMapper">
+
+    <!--查询用户列表-->
+    <select id="queryUserList" resultType="com.qxf.entity.SysUser">
+        SELECT
+            u.id,
+            u.username,
+            u.status
+        FROM
+            sys_user u
+        WHERE
+            u.id
+            <if test="isFriend != 1">
+                NOT
+            </if>
+             IN (
+                SELECT
+                    f.friend_id
+                FROM
+                    friendship f
+                WHERE
+                    f.user_id = #{userId}
+            )
+        <if test="isFriend != 1">
+            AND u.id != #{userId}
+        </if>
+        <if test="username != null and username != ''">
+            AND u.username LIKE concat('%',#{username},'%')
+        </if>
+    </select>
+
+    <!--更新用户信息-->
     <update id="updateUser">
         UPDATE sys_user
             <set>
@@ -31,4 +62,5 @@
             </set>
          where id = #{id}
     </update>
+
 </mapper>

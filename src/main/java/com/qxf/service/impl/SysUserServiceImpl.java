@@ -11,6 +11,7 @@ import com.qxf.mapper.UserRoomMapper;
 import com.qxf.service.SysUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -66,11 +67,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public List<SysUser> queryUserList(String username) {
-        LambdaQueryWrapper<SysUser> query = Wrappers.lambdaQuery();
-        if (StringUtils.isNotEmpty(username)){
-            query.like(SysUser::getUsername,username);
-        }
-        return sysUserMapper.selectList(query);
+    public List<SysUser> queryUserList(String username, Integer isFriend) {
+        SysUser user = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return sysUserMapper.queryUserList(user.getId(),username,isFriend);
     }
 }

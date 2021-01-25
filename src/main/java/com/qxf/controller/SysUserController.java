@@ -1,5 +1,6 @@
 package com.qxf.controller;
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.qxf.entity.SysUser;
 import com.qxf.service.SysUserService;
 import com.qxf.util.ResultUtil;
@@ -23,8 +24,11 @@ public class SysUserController {
 
     // 获取所有用户
     @GetMapping("/list")
-    public ResultUtil getUserList(){
-        return ResultUtil.ok(userService.queryUserList(null));
+    public ResultUtil getUserList(String searchKey,Integer isFriend){
+        if (isFriend == 0 && StringUtils.isEmpty(searchKey)){
+            return ResultUtil.error("查询关键字不能为空");
+        }
+        return ResultUtil.ok(userService.queryUserList(searchKey,isFriend));
     }
 
     /**
