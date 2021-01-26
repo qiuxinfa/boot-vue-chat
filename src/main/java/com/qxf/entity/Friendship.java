@@ -1,5 +1,7 @@
 package com.qxf.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+
 import java.io.Serializable;
 
 /**
@@ -42,10 +44,11 @@ public class Friendship implements Serializable {
     /**
      * 好友头像
      */
+    @TableField(exist = false)
     private String avatar;
 
     /**
-     * 好友状态，0发送添加好友请求，1正式成为好友
+     * 好友状态，0发送添加好友请求，1正式成为好友，2被拒绝了
      */
     private Integer status;
 

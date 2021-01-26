@@ -22,4 +22,16 @@ public interface FriendshipService extends IService<Friendship> {
      * 获取好友列表
      */
     List<Friendship> getFriendList(String userId);
+    /**
+     * 获取新朋友列表
+     */
+    List<Friendship> getNewFriendList(String userId);
+    /**
+     * 拒绝添加对方为好友
+     */
+    Integer refuse(Friendship friendship);
+    /**
+     * 同意添加对方为好友
+     */
+    Integer agree(Friendship friendship);
 }

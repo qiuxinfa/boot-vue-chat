@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * <p>
@@ -34,5 +35,25 @@ public class FriendshipServiceImpl extends ServiceImpl<FriendshipMapper, Friends
     @Override
     public List<Friendship> getFriendList(String userId) {
         return friendshipMapper.getFriendList(userId);
+    }
+
+    @Override
+    public List<Friendship> getNewFriendList(String userId) {
+        return friendshipMapper.getNewFriendList(userId);
+    }
+
+    @Override
+    public Integer refuse(Friendship friendship) {
+        return friendshipMapper.updateFriendStatus(friendship.getFriendId(),friendship.getUserId(),2);
+    }
+
+    @Override
+    public Integer agree(Friendship friendship) {
+        // 先插入一条数据，表示他是我的好友
+        friendship.setId(UUID.randomUUID().toString().replaceAll("-",""));
+        friendship.setStatus(1);
+        friendshipMapper.insert(friendship);
+        // 更新好友状态，表示我是他的好友
+        return friendshipMapper.updateFriendStatus(friendship.getFriendId(),friendship.getUserId(),1);
     }
 }
