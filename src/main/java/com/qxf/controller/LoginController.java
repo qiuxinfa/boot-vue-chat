@@ -4,6 +4,7 @@ import com.google.code.kaptcha.Producer;
 import com.qxf.entity.SysUser;
 import com.qxf.service.SysUserService;
 import com.qxf.util.ResultUtil;
+import com.qxf.util.VerifyCodeValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.authentication.DisabledException;
@@ -17,10 +18,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 /**
  * @ClassName LoginController
@@ -47,14 +50,18 @@ public class LoginController {
 
     // 登录
     @PostMapping("/login")
-    public ResultUtil login(@RequestBody SysUser user){
+    public ResultUtil login(HttpServletRequest request,@RequestBody SysUser user){
+        // 验证码校验
+        if (!VerifyCodeValidator.validate(request,user.getCode())){
+            return ResultUtil.error("验证码不正确或已过期！");
+        }
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
         try {
             // 身份认证
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             //广播系统通知消息
-            simpMessagingTemplate.convertAndSend("/topic/notification","系统消息：用户【"+user.getUsername()+"】进入了聊天室");
+            simpMessagingTemplate.convertAndSend("/topic/notification","系统消息：用户【"+user.getUsername()+"】上线了");
             // 认证成功，返回用户信息
             return ResultUtil.ok("登录成功！",authentication.getPrincipal());
         }catch (LockedException | DisabledException e){
@@ -71,7 +78,7 @@ public class LoginController {
     public ResultUtil logout(Authentication auth){
         SysUser user  = (SysUser)auth.getPrincipal();
         //广播系统消息
-        simpMessagingTemplate.convertAndSend("/topic/notification","系统消息：用户【"+user.getUsername()+"】退出了聊天室");
+        simpMessagingTemplate.convertAndSend("/topic/notification","系统消息：用户【"+user.getUsername()+"】下线了");
         SecurityContextHolder.clearContext();
         return ResultUtil.ok("退出成功！");
     }
@@ -94,6 +101,7 @@ public class LoginController {
         String code = captchaProducer.createText();
         BufferedImage image = captchaProducer.createImage(code);
         session.setAttribute("verify_code",code);
+        session.setAttribute("verify_code_time", LocalDateTime.now());
         try {
             ImageIO.write(image, "JPEG", response.getOutputStream());
         } catch (IOException e) {

@@ -1,8 +1,5 @@
 package com.qxf.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.qxf.filter.VerificationCodeFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,8 +9,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,9 +22,6 @@ import java.io.IOException;
  **/
 @Configuration
 public class MySecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    VerificationCodeFilter verificationCodeFilter;
-
     //密码加密
     @Bean
     PasswordEncoder passwordEncoder(){
@@ -44,16 +36,14 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     //登录验证
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //将验证码过滤器添加在用户名密码过滤器的前面
-        http.addFilterBefore(verificationCodeFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeRequests()
             // httpMethod options
             .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-            // 放行 登录、登出、注册、验证码
-            .antMatchers("/auth/**").permitAll()
+            // 放行 登录、登出、注册、验证码、检查用户名是否重复
+            .antMatchers("/auth/**","/user/checkUsername").permitAll()
             // 文件相关
-            .antMatchers("/api/file/**").permitAll()
+            .antMatchers("/api/file/**","/file").permitAll()
             // 放行 webSocket
             .antMatchers("/chat/**").permitAll()
             .anyRequest().authenticated()

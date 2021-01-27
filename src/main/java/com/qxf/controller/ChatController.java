@@ -32,6 +32,8 @@ public class ChatController {
     @MessageMapping("/ws/chat")
     public void handleMessage(ChatMessage message){
         message.setMsgId(UUID.randomUUID().toString().replaceAll("-",""));
+        //处理emoji内容,转换成unicode编码
+        message.setContent(emojiConverter.toHtml(message.getContent()));
         simpMessagingTemplate.convertAndSendToUser(message.getToUserId(),"/chat",message);
     }
 

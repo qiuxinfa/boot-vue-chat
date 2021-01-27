@@ -1,5 +1,6 @@
 package com.qxf.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -62,6 +63,17 @@ public class SysUser implements UserDetails,Serializable {
      * 头像uri
      */
     private String avatar;
+
+    @TableField(exist = false)
+    private String code;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public String getId() {
         return id;
