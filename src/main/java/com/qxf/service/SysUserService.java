@@ -15,6 +15,14 @@ import java.util.List;
  */
 public interface SysUserService extends IService<SysUser> {
     /**
+     * 用户上线
+     */
+    Integer userOnline(String userId);
+    /**
+     * 用户下线
+     */
+    Integer userOffline(String userId);
+    /**
      * 修改个人信息
      */
     Integer updateUser(SysUser user);

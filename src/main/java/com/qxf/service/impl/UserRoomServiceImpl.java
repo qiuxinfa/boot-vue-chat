@@ -1,15 +1,10 @@
 package com.qxf.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.qxf.entity.UserRoom;
 import com.qxf.mapper.UserRoomMapper;
 import com.qxf.service.UserRoomService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * <p>
@@ -22,19 +17,4 @@ import java.util.List;
 @Service
 public class UserRoomServiceImpl extends ServiceImpl<UserRoomMapper, UserRoom> implements UserRoomService {
 
-    @Resource
-    private UserRoomMapper roomMapper;
-
-    @Override
-    public Integer createRoom(UserRoom room) {
-        return roomMapper.insert(room);
-    }
-
-    @Override
-    public List<UserRoom> getRoomList(String userId) {
-        LambdaQueryWrapper<UserRoom> query = Wrappers.lambdaQuery();
-        query.eq(UserRoom::getUserId,userId);
-        query.orderByAsc(UserRoom::getRoomName);
-        return roomMapper.selectList(query);
-    }
 }

@@ -76,7 +76,8 @@ public class CodeGenerator {
 //        strategy.setEntityLombokModel(true);
         strategy.setRestControllerStyle(true);
 //        strategy.setSuperControllerClass("com.wcy.eblog.controller.BaseController;");
-        strategy.setInclude("chat_record","friendship","friend_group");
+        // 添加要代码生成的表，多个用逗号分割
+        strategy.setInclude("chat_room");
 //        strategy.setSuperEntityColumns("id", "created", "modified", "status");
         strategy.setControllerMappingHyphenStyle(true);
 //        strategy.setTablePrefix(pc.getModuleName() + "_");

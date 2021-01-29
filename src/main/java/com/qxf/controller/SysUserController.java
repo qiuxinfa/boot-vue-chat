@@ -22,7 +22,7 @@ public class SysUserController {
     @Resource
     private SysUserService userService;
 
-    // 获取所有用户
+    // 获取所有用户:isFriend=1，表示查询好友，isFriend=0，表示查询非好友
     @GetMapping("/list")
     public ResultUtil getUserList(String searchKey,Integer isFriend){
         if (isFriend == 0 && StringUtils.isEmpty(searchKey)){

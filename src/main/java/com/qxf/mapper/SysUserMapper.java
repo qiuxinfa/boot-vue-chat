@@ -3,6 +3,7 @@ package com.qxf.mapper;
 import com.qxf.entity.SysUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -15,6 +16,12 @@ import java.util.List;
  * @since 2021-01-08
  */
 public interface SysUserMapper extends BaseMapper<SysUser> {
+
+    /**
+     * 修改用户状态
+     */
+    @Update("update sys_user set is_online = #{isOnline} where id = #{userId}")
+    Integer updateUserState(@Param("userId") String userId,@Param("isOnline") Integer isOnline);
     /**
      * 修改个人信息
      */

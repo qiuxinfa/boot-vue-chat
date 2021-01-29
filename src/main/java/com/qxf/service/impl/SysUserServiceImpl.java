@@ -47,6 +47,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
+    public Integer userOnline(String userId) {
+        return sysUserMapper.updateUserState(userId,1);
+    }
+
+    @Override
+    public Integer userOffline(String userId) {
+        return sysUserMapper.updateUserState(userId,0);
+    }
+
+    @Override
     public Integer updateUser(SysUser user) {
         return sysUserMapper.updateUser(user);
     }
@@ -62,7 +72,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public Integer register(SysUser user) {
         user.setId(UUID.randomUUID().toString().replaceAll("-",""));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setStatus(1);
         return sysUserMapper.insert(user);
     }
 

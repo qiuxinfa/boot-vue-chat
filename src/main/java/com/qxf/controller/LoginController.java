@@ -34,7 +34,6 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("/auth")
 public class LoginController {
-
     @Resource
     private SysUserService userService;
 
@@ -60,10 +59,14 @@ public class LoginController {
             // 身份认证
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            SysUser sysUser = (SysUser) authentication.getPrincipal();
+            // 更新用户状态为在线
+            sysUser.setIsOnline(1);
+            userService.userOnline(sysUser.getId());
             //广播系统通知消息
             simpMessagingTemplate.convertAndSend("/topic/notification","系统消息：用户【"+user.getUsername()+"】上线了");
             // 认证成功，返回用户信息
-            return ResultUtil.ok("登录成功！",authentication.getPrincipal());
+            return ResultUtil.ok("登录成功！",sysUser);
         }catch (LockedException | DisabledException e){
             e.printStackTrace();
             return ResultUtil.ok("账号被锁定了，请联系管理员解锁！");
@@ -77,6 +80,8 @@ public class LoginController {
     @GetMapping("/logout")
     public ResultUtil logout(Authentication auth){
         SysUser user  = (SysUser)auth.getPrincipal();
+        // 更新用户状态为离线
+        userService.userOffline(user.getId());
         //广播系统消息
         simpMessagingTemplate.convertAndSend("/topic/notification","系统消息：用户【"+user.getUsername()+"】下线了");
         SecurityContextHolder.clearContext();

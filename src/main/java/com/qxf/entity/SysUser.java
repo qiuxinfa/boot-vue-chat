@@ -55,9 +55,9 @@ public class SysUser implements UserDetails,Serializable {
     private String email;
 
     /**
-     * 用户状态，1正常2冻结
+     * 是否在线，1在线 0离线
      */
-    private Integer status;
+    private Integer isOnline;
 
     /**
      * 头像uri
@@ -95,7 +95,7 @@ public class SysUser implements UserDetails,Serializable {
     // 账号没有被锁定
     @Override
     public boolean isAccountNonLocked() {
-        return status == 1;
+        return true;
     }
 
     // 密码没有过期
@@ -107,7 +107,7 @@ public class SysUser implements UserDetails,Serializable {
     // 是否可用
     @Override
     public boolean isEnabled() {
-        return status == 1;
+        return true;
     }
 
     public void setUsername(String username) {
@@ -155,13 +155,15 @@ public class SysUser implements UserDetails,Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-    public Integer getStatus() {
-        return status;
+
+    public Integer getIsOnline() {
+        return isOnline;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setIsOnline(Integer isOnline) {
+        this.isOnline = isOnline;
     }
+
     public String getAvatar() {
         return avatar;
     }
@@ -180,7 +182,7 @@ public class SysUser implements UserDetails,Serializable {
             ", age=" + age +
             ", phone=" + phone +
             ", email=" + email +
-            ", status=" + status +
+            ", isOnline=" + isOnline +
             ", avatar=" + avatar +
         "}";
     }

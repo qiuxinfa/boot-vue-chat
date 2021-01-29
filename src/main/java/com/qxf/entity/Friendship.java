@@ -52,6 +52,20 @@ public class Friendship implements Serializable {
      */
     private Integer status;
 
+    /**
+     * 好友是否在线，0离线，1在线
+     */
+    @TableField(exist = false)
+    private Integer isOnline;
+
+    public Integer getIsOnline() {
+        return isOnline;
+    }
+
+    public void setIsOnline(Integer isOnline) {
+        this.isOnline = isOnline;
+    }
+
     public String getAvatar() {
         return avatar;
     }

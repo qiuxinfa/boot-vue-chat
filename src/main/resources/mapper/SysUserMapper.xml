@@ -7,7 +7,7 @@
         SELECT
             u.id,
             u.username,
-            u.status
+            u.is_online
         FROM
             sys_user u
         WHERE
@@ -53,8 +53,8 @@
                 <if test="email != null and email != ''">
                     email = #{email},
                 </if>
-                <if test="status != null">
-                    status = #{status},
+                <if test="isOnline != null">
+                    is_online = #{isOnline},
                 </if>
                 <if test="avatar != null and avatar != ''">
                     avatar = #{avatar},
