@@ -63,4 +63,8 @@
          where id = #{id}
     </update>
 
+    <select id="getUserStateByRoomId" resultType="com.qxf.entity.SysUser">
+        SELECT u.id,u.is_online from sys_user u,user_room r where u.id = r.user_id and r.room_id = #{roomId}
+    </select>
+
 </mapper>

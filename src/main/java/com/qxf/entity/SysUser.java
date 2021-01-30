@@ -1,6 +1,7 @@
 package com.qxf.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -15,6 +16,8 @@ import java.util.Collection;
  * @author qiuxinfa
  * @since 2021-01-08
  */
+// 解决： Unrecognized field xxx , not marked as ignorable 问题
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SysUser implements UserDetails,Serializable {
 
     private static final long serialVersionUID = 1L;

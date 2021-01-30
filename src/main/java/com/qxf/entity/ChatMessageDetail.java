@@ -1,9 +1,8 @@
 package com.qxf.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-
-import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -25,7 +24,7 @@ public class ChatMessageDetail implements Serializable {
     /**
      * 消息发送时间
      */
-    private LocalDateTime createTime;
+    private Date createTime;
 
     /**
      * 发送人id
@@ -75,13 +74,15 @@ public class ChatMessageDetail implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
-    public LocalDateTime getCreateTime() {
+
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(LocalDateTime createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
     public String getFromUserId() {
         return fromUserId;
     }

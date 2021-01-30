@@ -68,6 +68,7 @@ public class ChatController {
         //处理emoji内容,转换成unicode编码
         groupMsgContent.setContent(emojiConverter.toHtml(groupMsgContent.getContent()));
         groupMsgContent.setId(detailId);
+        messageDetailService.save(groupMsgContent);
         // 获取群聊用户在线状态
         List<SysUser> userList = redisUtil.getRoomUserState(roomId);
         String fromUserId = groupMsgContent.getFromUserId();

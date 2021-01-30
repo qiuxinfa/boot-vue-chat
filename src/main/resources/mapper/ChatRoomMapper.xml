@@ -5,8 +5,8 @@
         SELECT c.id,
         c.`name`,
         c.avatar,
-        c.masterId,
-        c.managerIds
+        c.master_id,
+        c.manager_ids
         FROM
         chat_room c,user_room u
         WHERE

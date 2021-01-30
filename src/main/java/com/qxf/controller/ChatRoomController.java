@@ -11,8 +11,6 @@ import com.qxf.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -50,7 +48,7 @@ public class ChatRoomController {
         // 设置群主，默认为创建人
         chatRoom.setMasterId(user.getId());
         chatRoom.setId(roomId);
-        chatRoom.setCreateTime(LocalDateTime.now());
+        chatRoom.setCreateTime(new Date());
         chatRoomService.save(chatRoom);
         // 建立用户-群聊的关联关系
         for (String userId : ids){
