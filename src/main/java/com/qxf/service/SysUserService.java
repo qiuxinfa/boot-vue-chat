@@ -15,6 +15,10 @@ import java.util.List;
  */
 public interface SysUserService extends IService<SysUser> {
     /**
+     *  根据群聊id，查询群聊所有用户的在线状态
+     */
+    List<SysUser> getUserStateByRoomId(String roomId);
+    /**
      * 用户上线
      */
     Integer userOnline(String userId);

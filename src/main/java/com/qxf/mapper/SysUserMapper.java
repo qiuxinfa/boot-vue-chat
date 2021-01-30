@@ -16,6 +16,10 @@ import java.util.List;
  * @since 2021-01-08
  */
 public interface SysUserMapper extends BaseMapper<SysUser> {
+    /**
+     *  根据群聊id，查询群聊所有用户的在线状态
+     */
+    List<SysUser> getUserStateByRoomId(@Param("roomId") String roomId);
 
     /**
      * 修改用户状态

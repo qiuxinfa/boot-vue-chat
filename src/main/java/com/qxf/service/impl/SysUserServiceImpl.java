@@ -47,6 +47,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
+    public List<SysUser> getUserStateByRoomId(String roomId) {
+        return sysUserMapper.getUserStateByRoomId(roomId);
+    }
+
+    @Override
     public Integer userOnline(String userId) {
         return sysUserMapper.updateUserState(userId,1);
     }

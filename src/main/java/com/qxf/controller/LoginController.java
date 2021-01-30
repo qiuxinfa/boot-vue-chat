@@ -3,7 +3,9 @@ package com.qxf.controller;
 import com.google.code.kaptcha.Producer;
 import com.qxf.entity.SysUser;
 import com.qxf.service.SysUserService;
+import com.qxf.util.RedisUtil;
 import com.qxf.util.ResultUtil;
+import com.qxf.util.UserConstant;
 import com.qxf.util.VerifyCodeValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -47,6 +49,9 @@ public class LoginController {
     @Autowired
     SimpMessagingTemplate simpMessagingTemplate;
 
+    @Autowired
+    RedisUtil redisUtil;
+
     // 登录
     @PostMapping("/login")
     public ResultUtil login(HttpServletRequest request,@RequestBody SysUser user){
@@ -61,7 +66,7 @@ public class LoginController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             SysUser sysUser = (SysUser) authentication.getPrincipal();
             // 更新用户状态为在线
-            sysUser.setIsOnline(1);
+            redisUtil.setOnline(sysUser.getId(), UserConstant.ONLINE);
             userService.userOnline(sysUser.getId());
             //广播系统通知消息
             simpMessagingTemplate.convertAndSend("/topic/notification","系统消息：用户【"+user.getUsername()+"】上线了");
@@ -81,6 +86,7 @@ public class LoginController {
     public ResultUtil logout(Authentication auth){
         SysUser user  = (SysUser)auth.getPrincipal();
         // 更新用户状态为离线
+        redisUtil.setOnline(user.getId(), UserConstant.OFFLINE);
         userService.userOffline(user.getId());
         //广播系统消息
         simpMessagingTemplate.convertAndSend("/topic/notification","系统消息：用户【"+user.getUsername()+"】下线了");

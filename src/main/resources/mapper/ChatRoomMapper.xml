@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qxf.mapper.ChatRoomMapper">
+    <select id="getRoomList" resultType="com.qxf.entity.ChatRoom">
+        SELECT c.id,
+        c.`name`,
+        c.avatar,
+        c.masterId,
+        c.managerIds
+        FROM
+        chat_room c,user_room u
+        WHERE
+        c.id = u.room_id
+        <if test="userId != null and userId != ''">
+            and u.user_id = #{userId}
+        </if>
+        ORDER BY c.`name`
+    </select>
+</mapper>
