@@ -21,7 +21,7 @@ public interface FriendshipService extends IService<Friendship> {
     /**
      * 获取好友列表
      */
-    List<Friendship> getFriendList(String userId);
+    List<Friendship> getFriendList(String userId,String friendId);
     /**
      * 获取新朋友列表
      */

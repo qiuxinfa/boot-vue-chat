@@ -33,8 +33,8 @@ public class FriendshipServiceImpl extends ServiceImpl<FriendshipMapper, Friends
     }
 
     @Override
-    public List<Friendship> getFriendList(String userId) {
-        return friendshipMapper.getFriendList(userId);
+    public List<Friendship> getFriendList(String userId,String friendId) {
+        return friendshipMapper.getFriendList(userId,friendId);
     }
 
     @Override

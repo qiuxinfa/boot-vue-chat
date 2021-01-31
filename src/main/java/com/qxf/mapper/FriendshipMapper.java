@@ -17,11 +17,10 @@ import java.util.List;
  * @since 2021-01-08
  */
 public interface FriendshipMapper extends BaseMapper<Friendship> {
-    @Select("select f.friend_id,f.remark,u.avatar,u.is_online from friendship f,sys_user u where f.`status` = 1 and f.user_id = u.id and u.id=#{userId} order by f.remark")
-    List<Friendship> getFriendList(@Param("userId") String userId);
+    // 查询好友列表
+    List<Friendship> getFriendList(@Param("userId") String userId,@Param("friendId") String friendId);
 
     // 查询新朋友列表
-    @Select("select u.id friendId,u.username remark,u.avatar from friendship f,sys_user u where f.`status` = 0 and f.user_id = u.id and f.friend_id=#{userId} order by u.username")
     List<Friendship> getNewFriendList(@Param("userId") String userId);
 
     // 修改好友状态

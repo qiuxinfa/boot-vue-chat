@@ -5,9 +5,12 @@ import com.qxf.entity.SysUser;
 import com.qxf.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @ClassName RedisUtil
@@ -25,6 +28,9 @@ public class RedisUtil {
 
     @Autowired
     private SysUserService userService;
+
+    // 默认过期时间 10 分钟
+    private static final long DEFAULT_TIMEOUT = 600L;
 
     // 缓存是否在线，1在线 0离线
     public void setOnline(String userId,String isOnline){
@@ -46,7 +52,12 @@ public class RedisUtil {
 
     // 缓存群聊所有用户的在线状态
     public void setRoomUserState(String roomId, List<SysUser> userList){
-        redisTemplate.opsForValue().set(roomId,userList);
+        redisTemplate.opsForValue().set(roomId,userList,DEFAULT_TIMEOUT, TimeUnit.SECONDS);
+    }
+
+    // 缓存群聊所有用户的在线状态
+    public void setRoomUserState(String roomId, List<SysUser> userList,long timeout,TimeUnit timeUnit){
+        redisTemplate.opsForValue().set(roomId,userList,timeout,timeUnit);
     }
 
     // 根据群聊id返回用户在线状态
@@ -60,4 +71,5 @@ public class RedisUtil {
             return (List<SysUser>) o;
         }
     }
+
 }
