@@ -47,13 +47,16 @@ public class ChatController {
         message.setId(UUID.randomUUID().toString().replaceAll("-",""));
         //处理emoji内容,转换成unicode编码
         message.setContent(emojiConverter.toHtml(message.getContent()));
-        // 保存消息
-        this.saveChatMessage(message.getToUserId(),message.getId(),0);
         // 保存消息详情
         messageDetailService.save(message);
         // 如果接收消息的用户在线，推送消息
         if (UserConstant.ONLINE.equals(redisUtil.isOnline(message.getToUserId()))){
+            // 保存消息为已读
+            this.saveChatMessage(message.getToUserId(),message.getId(),1);
             simpMessagingTemplate.convertAndSendToUser(message.getToUserId(),"/chat",message);
+        }else {
+            // 保存消息为未读
+            this.saveChatMessage(message.getToUserId(),message.getId(),0);
         }
     }
 
@@ -78,11 +81,14 @@ public class ChatController {
                     // 发消息的人，保存消息为已读
                     this.saveChatMessage(user.getId(),detailId,1);
                 }else {
-                    // 其他人，保存消息为未读
-                    this.saveChatMessage(user.getId(),detailId,0);
                     if (user.getIsOnline() == 1){
+                        // 在线用户，保存消息为已读
+                        this.saveChatMessage(user.getId(),detailId,1);
                         //转发该条数据给在线用户
                         simpMessagingTemplate.convertAndSend("/topic/rooms/"+roomId+"/"+user.getId(),groupMsgContent);
+                    }else {
+                        // 离线用户，保存消息为未读
+                        this.saveChatMessage(user.getId(),detailId,0);
                     }
                 }
             }

@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qxf.mapper.ChatMessageDetailMapper">
-
+    <select id="getOfflineMsg" resultType="com.qxf.entity.ChatMessageDetail">
+        SELECT
+            b.*
+        FROM
+            chat_message a,
+            chat_message_detail b
+        WHERE
+            b.id = a.detail_id
+        AND a.to_user_id = #{toUserId}
+        AND a.is_read = 0
+        <if test="roomId != null and roomId != ''">
+            AND b.msg_type = 1
+            AND b.room_id = #{roomId}
+        </if>
+        <if test="fromUserId != null and fromUserId != ''">
+            AND b.msg_type = 2
+            AND b.from_user_id = #{fromUserId}
+        </if>
+        ORDER BY b.create_time
+    </select>
 </mapper>

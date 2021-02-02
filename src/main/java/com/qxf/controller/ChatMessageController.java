@@ -1,8 +1,12 @@
 package com.qxf.controller;
 
 
+import com.qxf.entity.SysUser;
+import com.qxf.service.ChatMessageService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -14,7 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2021-01-29
  */
 @RestController
-@RequestMapping("/chat-message")
+@RequestMapping("/message")
 public class ChatMessageController {
+    @Autowired
+    private ChatMessageService messageService;
 
+    @PostMapping("/update")
+    public void updateMsgState(){
+        SysUser user = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        messageService.updateMsgState(user.getId());
+    }
 }

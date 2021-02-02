@@ -6,6 +6,9 @@ import com.qxf.service.ChatMessageDetailService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.List;
+
 /**
  * <p>
  * 聊天消息详情 服务实现类
@@ -16,5 +19,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ChatMessageDetailServiceImpl extends ServiceImpl<ChatMessageDetailMapper, ChatMessageDetail> implements ChatMessageDetailService {
+
+    @Resource
+    private ChatMessageDetailMapper detailMapper;
+
+    @Override
+    public List<ChatMessageDetail> getOfflineMsg(String fromUserId, String toUserId, String roomId) {
+        return detailMapper.getOfflineMsg(fromUserId,toUserId,roomId);
+    }
 
 }

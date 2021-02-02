@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2021-01-29
  */
 public interface ChatMessageService extends IService<ChatMessage> {
-
+    void updateMsgState(String toUserId);
 }
