@@ -25,6 +25,14 @@ spring:
     timeout: 60000
     lettuce:
       shutdown-timeout: 0
+# 邮件配置
+  mail:
+    username: your username
+    password: your password
+    host: smtp.163.com
+    properties.mail.smtp.port: 465 #465或者994
+    properties.mail.smtp.ssl.enable: true #开启SSL
+    default-encoding: utf-8
 
 
 # mybatisPlus配置

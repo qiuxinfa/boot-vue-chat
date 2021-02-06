@@ -29,8 +29,8 @@ public class RedisUtil {
     @Autowired
     private SysUserService userService;
 
-    // 默认过期时间 10 分钟
-    private static final long DEFAULT_TIMEOUT = 600L;
+    // 默认过期时间 15 分钟
+    private static final long DEFAULT_TIMEOUT = 900L;
 
     // 缓存是否在线，1在线 0离线
     public void setOnline(String userId,String isOnline){
@@ -72,4 +72,19 @@ public class RedisUtil {
         }
     }
 
+    public void set(String key,Object object){
+        redisTemplate.opsForValue().set(key,object,DEFAULT_TIMEOUT,TimeUnit.SECONDS);
+    }
+
+    public void set(String key,Object object,long timeout,TimeUnit timeUnit){
+        redisTemplate.opsForValue().set(key,object,timeout,timeUnit);
+    }
+
+    public Object get(String key){
+        return redisTemplate.opsForValue().get(key);
+    }
+
+    public void remove(String key){
+        redisTemplate.delete(key);
+    }
 }
