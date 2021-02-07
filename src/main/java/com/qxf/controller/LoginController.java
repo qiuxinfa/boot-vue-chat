@@ -165,7 +165,8 @@ public class LoginController {
         SysUser user = (SysUser) o;
         user.setPassword(passwordEncoder.encode(password));
         userService.updateById(user);
-
+        // 移除缓存
+        redisUtil.remove(userDto.getKey());
         return ResultUtil.ok("密码重置成功，请重新登录！");
     }
 

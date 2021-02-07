@@ -1,5 +1,6 @@
 package com.qxf.service;
 
+import com.qxf.dto.ChatRecordDto;
 import com.qxf.entity.ChatMessageDetail;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -16,4 +17,8 @@ import java.util.List;
 public interface ChatMessageDetailService extends IService<ChatMessageDetail> {
     // 获取离线消息，fromUserId和roomId，只传一个，另一个传空值即可，分别实现单聊和群聊离线消息的拉取
     List<ChatMessageDetail> getOfflineMsg(String fromUserId,String toUserId,String roomId);
+    // 获取私聊的聊天记录
+    List<ChatMessageDetail> getUserChatRecord(ChatRecordDto dto);
+    // 获取群聊的聊天记录
+    List<ChatMessageDetail> getRoomChatRecord(ChatRecordDto dto);
 }

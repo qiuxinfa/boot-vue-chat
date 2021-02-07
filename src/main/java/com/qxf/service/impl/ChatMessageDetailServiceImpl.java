@@ -1,5 +1,6 @@
 package com.qxf.service.impl;
 
+import com.qxf.dto.ChatRecordDto;
 import com.qxf.entity.ChatMessageDetail;
 import com.qxf.mapper.ChatMessageDetailMapper;
 import com.qxf.service.ChatMessageDetailService;
@@ -26,6 +27,16 @@ public class ChatMessageDetailServiceImpl extends ServiceImpl<ChatMessageDetailM
     @Override
     public List<ChatMessageDetail> getOfflineMsg(String fromUserId, String toUserId, String roomId) {
         return detailMapper.getOfflineMsg(fromUserId,toUserId,roomId);
+    }
+
+    @Override
+    public List<ChatMessageDetail> getUserChatRecord(ChatRecordDto dto) {
+        return detailMapper.getUserChatRecord(dto);
+    }
+
+    @Override
+    public List<ChatMessageDetail> getRoomChatRecord(ChatRecordDto dto) {
+        return detailMapper.getRoomChatRecord(dto);
     }
 
 }

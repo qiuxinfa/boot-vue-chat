@@ -38,5 +38,20 @@ public class MailUtil {
         mailSender.send(message);
     }
 
+    @Async
+    public void sendFeedback(String fromEmailAddress,String content){
+        //简单邮件
+        SimpleMailMessage message = new SimpleMailMessage();
+        //邮件标题
+        message.setSubject("用户反馈");
+        //邮件内容
+        message.setText(content);
+        //发送者
+        message.setFrom(fromEmailAddress);
+        //接收者
+        message.setTo(mailFromUsername);
+        //发送邮件
+        mailSender.send(message);
+    }
 
 }

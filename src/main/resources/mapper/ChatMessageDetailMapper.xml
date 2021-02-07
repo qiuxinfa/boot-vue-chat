@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qxf.mapper.ChatMessageDetailMapper">
+    <!--获取离线消息，fromUserId和roomId，只传一个，另一个传空值即可，分别实现单聊和群聊离线消息的拉取-->
     <select id="getOfflineMsg" resultType="com.qxf.entity.ChatMessageDetail">
         SELECT
             b.*
@@ -21,4 +22,88 @@
         </if>
         ORDER BY b.create_time
     </select>
+
+    <!--获取私聊的聊天记录-->
+    <select id="getUserChatRecord" resultType="com.qxf.entity.ChatMessageDetail">
+        SELECT
+            *
+        FROM
+            (
+                SELECT
+                    d.id,
+                    d.create_time,
+                    d.from_user_id,
+                    d.from_username,
+                    d.from_avatar,
+                    d.msg_type,
+                    d.content_type,
+                    d.room_id,
+                    d.content,
+                    m.to_user_id
+                FROM
+                    chat_message_detail d,
+                    chat_message m
+                WHERE
+                    d.id = m.detail_id
+                AND m.to_user_id = #{dto.toUserId}
+                AND d.from_user_id = #{dto.fromUserId}
+                AND d.msg_type = 2
+                <if test="dto.days != null">
+                    AND d.create_time >= DATE_SUB(CURDATE(),INTERVAL #{dto.days} DAY)
+                </if>
+                UNION ALL
+                SELECT
+                    d.id,
+                    d.create_time,
+                    d.from_user_id,
+                    d.from_username,
+                    d.from_avatar,
+                    d.msg_type,
+                    d.content_type,
+                    d.room_id,
+                    d.content,
+                    m.to_user_id
+                FROM
+                    chat_message_detail d,
+                    chat_message m
+                WHERE
+                    d.id = m.detail_id
+                AND m.to_user_id = #{dto.fromUserId}
+                AND d.from_user_id = #{dto.toUserId}
+                AND d.msg_type = 2
+                <if test="dto.days != null">
+                    AND d.create_time >= DATE_SUB(CURDATE(),INTERVAL #{dto.days} DAY)
+                </if>
+            ) t
+        ORDER BY
+            t.create_time
+    </select>
+
+    <!--获取群聊的聊天记录-->
+    <select id="getRoomChatRecord" resultType="com.qxf.entity.ChatMessageDetail">
+        SELECT
+            d.id,
+            d.create_time,
+            d.from_user_id,
+            d.from_username,
+            d.from_avatar,
+            d.msg_type,
+            d.content_type,
+            d.room_id,
+            d.content,
+            m.to_user_id
+        FROM
+            chat_message_detail d,
+            chat_message m
+        WHERE
+            d.id = m.detail_id
+        AND m.to_user_id = #{dto.toUserId}
+        AND d.room_id = #{dto.roomId}
+        AND d.msg_type = 1
+        <if test="dto.days != null">
+            AND d.create_time >= DATE_SUB(CURDATE(),INTERVAL #{dto.days} DAY)
+        </if>
+        ORDER BY d.create_time
+    </select>
+
 </mapper>

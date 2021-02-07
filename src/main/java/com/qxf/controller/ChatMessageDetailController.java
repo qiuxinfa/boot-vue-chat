@@ -1,6 +1,8 @@
 package com.qxf.controller;
 
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.qxf.dto.ChatRecordDto;
 import com.qxf.entity.SysUser;
 import com.qxf.service.ChatMessageDetailService;
 import com.qxf.util.ResultUtil;
@@ -32,6 +34,32 @@ public class ChatMessageDetailController {
     public ResultUtil getUserMsg(){
         SysUser user = (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResultUtil.ok(detailService.getOfflineMsg(null,user.getId(),null));
+    }
+
+    // 获取聊天记录
+    @GetMapping("/getChatRecord")
+    public ResultUtil getChatRecord(ChatRecordDto dto){
+        Integer msgType = dto.getMsgType();
+        if (msgType != 1 && msgType != 2){
+            return ResultUtil.error("参数传递错误，消息类型只能是1或2");
+        }
+        if (msgType == 1){
+            // 群聊
+            if (StringUtils.isEmpty(dto.getRoomId())){
+                return ResultUtil.error("参数传递错误，聊天室id不能为空");
+            }else {
+                return ResultUtil.ok(detailService.getRoomChatRecord(dto));
+            }
+
+        }else {
+            // 私聊
+            if (StringUtils.isEmpty(dto.getToUserId()) || StringUtils.isEmpty(dto.getFromUserId())){
+                return ResultUtil.error("参数传递错误，消息的发送者或接收者不能为空");
+            }else {
+                return ResultUtil.ok(detailService.getUserChatRecord(dto));
+            }
+
+        }
     }
 
 }
